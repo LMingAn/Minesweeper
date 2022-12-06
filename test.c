@@ -16,7 +16,7 @@ void game()
 	InitBoard(true, ROWS, COLS, '0');
 	InitBoard(show, ROWS, COLS, '*');
 	//打印棋盘
-	//DisPlayBoard(true, ROW, COL);
+	DisPlayBoard(true, ROW, COL);
 	DisPlayBoard(show, ROW, COL);
 
 	//布置雷
@@ -49,3 +49,9 @@ int main()
 		}
 	} while (input);
 }
+
+//游戏优化方向
+//1.如果不是雷，周围没有雷 - 展开一片 - 递归
+//2.标记雷
+
+//网页扫雷是用HTML+CSS前端技术实现的

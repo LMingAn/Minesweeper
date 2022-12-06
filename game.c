@@ -60,7 +60,7 @@ void DisPlayBoard(char board[ROWS][COLS], int row, int col)
 //布置雷
 void SetMine(char true[ROWS][COLS], int row, int col)
 {
-	int x, y, a = 10;//a为布置雷的个数
+	int x, y, a = Mode;//a为布置雷的个数
 	while(a)//此处也可用for循环，但修改雷个数较麻烦
 	{
 		x = rand() % row + 1;
@@ -79,6 +79,18 @@ void SetMine(char true[ROWS][COLS], int row, int col)
 //2.修饰全局变量
 //3.修饰函数
 
+static int MineSum(char true[ROWS][COLS], int x, int y)
+{
+	return true[x - 1][y - 1] +
+		true[x - 1][y] +
+		true[x - 1][y + 1] +
+		true[x][y - 1] +
+		true[x][y + 1] +
+		true[x + 1][y - 1] +
+		true[x + 1][y] +
+		true[x + 1][y + 1] - 8 * '0';
+}
+
 void FindMine(char true[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 {
 	//1.输入要排查的坐标
@@ -86,22 +98,33 @@ void FindMine(char true[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 		//（1）是雷 - 很遗憾游戏失败 - 游戏结束
 		//（2）不是雷 - 统计坐标周围有几个雷并打印出来 - 游戏继续
 
+	int Win = 0;
 	int x, y;
-	printf("请输入坐标：");
-	scanf_s("%d %d", &x, &y);
-	//判断坐标的合法性
-	if (x >= 1 && x <= row && y >= 1 && y <= col)
+	while (Win < row * col - Mode)
 	{
-		if (true[x][y] == '1')
+		printf("请输入坐标：");
+		scanf_s("%d %d", &x, &y);
+		//判断坐标的合法性
+		if (x >= 1 && x <= row && y >= 1 && y <= col)
 		{
-			printf("很遗憾，游戏失败：\n");
+			if (true[x][y] == '1')
+			{
+				printf("很遗憾，游戏失败：\n");
+				break;
+			}
+			else
+			{
+				//在没有踩到雷的情况下，检查周围有几个雷
+				int sum = MineSum(true, x, y);//MineSum用于统计周围雷的个数
+				show[x][y] = sum + '0';
+				//显示排查出的信息
+				DisPlayBoard(show, row, col);
+				Win++;
+			}
 		}
 		else
-		{
-			//在没有踩到雷的情况下，检查周围有几个雷
-			int sum = Mi
-		}
+			printf("输入错误，请重试：\n");
 	}
-	else
-		printf("输入错误，请重试：\n");
+	if (Win == row * col - Mode)
+		printf("恭喜你，游戏获胜\n");
 }

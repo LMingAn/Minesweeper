@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 
+#define Mode 80
 #define ROW 9
 #define COL 9
 
